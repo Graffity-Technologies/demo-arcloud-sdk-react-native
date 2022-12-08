@@ -1,14 +1,10 @@
 package com.reactnativesdkbridge;
 
 import android.content.Intent;
-import android.util.Log;
-
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.graffity.arcloud.ar.ARCloudActivity;
-
-import kotlin.Unit;
 
 public class GraffityAndroidModule extends ReactContextBaseJavaModule {
     private static ReactApplicationContext reactContext;

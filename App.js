@@ -95,7 +95,6 @@ const App: () => Node = () => {
           <View style={{ margin: 24 }}>
             <Button
               title={"Counter " + counter}
-              style={styles.button}
               onPress={counterHandler}
             />
           </View>
@@ -105,9 +104,7 @@ const App: () => Node = () => {
             <AndroidModuleButton />
           }
           </View>
-          
-    
-          
+
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -130,9 +127,6 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
-  },
-  button: {
-    marginBottom: 16,
   },
 });
 
