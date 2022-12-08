@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ARCloud Android</string>
+    <string name="back_btn">Button</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="anchorobject">AnchorObject</string>
+    <string name="errorTextHeader">Sorry! Problem occur</string>
+    <string name="backToHomeBtn">Back to homepage</string>
+    <string name="arConfigTextHeader">Prepare you to the AR world</string>
+</resources>

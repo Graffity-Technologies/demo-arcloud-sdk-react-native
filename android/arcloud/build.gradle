@@ -1,0 +1,198 @@
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+    id "com.google.protobuf"
+    id 'kotlin-parcelize'
+}
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        namespace "com.graffity.android.arcloud"
+        minSdk 24 // https://developers.google.com/ar/devices#google_play
+        minSdkVersion 24
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+        aarMetadata {
+            minCompileSdk = 24
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+
+    buildTypes {
+        debug {
+            resValue("string", "GRAFFITY_SECRET_TOKEN", GRAFFITY_SECRET_TOKEN)
+            // buildConfigField "String", "GRAFFITY_SECRET_TOKEN", "\"" + GRAFFITY_SECRET_TOKEN + "\""
+            // Enables code shrinking, obfuscation, and optimization for release build type.
+            minifyEnabled false
+            // Includes the default ProGuard rules files
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+        release {
+            resValue("string", "GRAFFITY_SECRET_TOKEN", GRAFFITY_SECRET_TOKEN)
+            // buildConfigField "String", "GRAFFITY_SECRET_TOKEN", "\"" + GRAFFITY_SECRET_TOKEN + "\""
+            // Enables code shrinking, obfuscation, and optimization for release build type.
+            minifyEnabled false
+            // Includes the default ProGuard rules files
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${rootProject.name}.aar"
+        }
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    sourceSets {
+        main {
+            proto {
+                srcDir "src/main/proto" // path to .proto file
+            }
+        }
+    }
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.19.3" // https://mvnrepository.com/artifact/com.google.protobuf/protoc
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.42.1"
+        }
+//        grpckt {
+//            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.2.1:jdk7@jar" // https://repo.maven.apache.org/maven2/io/grpc/protoc-gen-grpc-kotlin/1.2.1/
+//        }
+    }
+    generateProtoTasks {
+        all().each {
+            task ->
+                task.builtins {
+                    java {
+                        option "lite"
+                    }
+//                kotlin {}
+                }
+                task.plugins {
+                    grpc {
+                        // Options added to --grpc_out
+                        option "lite"
+                    }
+//                grpckt {}
+                }
+        }
+    }
+}
+
+configurations {
+    include
+}
+
+dependencies {
+//    implementation fileTree(dir: "libs", include: "*.jar")
+    // Others
+    implementation("io.coil-kt:coil:2.0.0")
+    include("io.coil-kt:coil:2.0.0")
+
+    // gRPC
+//    implementation("io.grpc:grpc-okhttp:1.42.1")
+    implementation("io.grpc:grpc-protobuf:1.42.1")
+    include("io.grpc:grpc-protobuf:1.42.1")
+    implementation("io.grpc:grpc-stub:1.43.2")
+    include("io.grpc:grpc-stub:1.43.2")
+    // implementation "io.grpc:grpc-kotlin-stub:1.2.1"
+    implementation("com.google.protobuf:protobuf-kotlin:3.19.3")
+    implementation("org.apache.tomcat:annotations-api:6.0.53")
+
+    // REST
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    include("com.squareup.retrofit2:retrofit:2.9.0")
+
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    include("com.squareup.retrofit2:converter-moshi:2.9.0")
+
+    implementation("com.squareup.retrofit2:converter-gson:2.7.1")
+    include("com.squareup.retrofit2:converter-gson:2.7.1")
+
+    implementation("com.squareup.moshi:moshi-kotlin:1.9.3")
+    include("com.squareup.moshi:moshi-kotlin:1.9.3")
+
+    implementation("com.google.code.gson:gson:2.9.0")
+    include("com.google.code.gson:gson:2.9.0")
+
+    // AR
+    implementation("io.github.sceneview:arsceneview:0.9.0")
+    include("io.github.sceneview:arsceneview:0.9.0")
+//    api project(":sceneformux")
+//    implementation("com.google.android.filament:gltfio-android:1.4.5")
+//    include("com.google.android.filament:gltfio-android:1.4.5")
+//
+//    implementation("com.google.android.filament:gltfio-android:1.4.5")
+//    include("com.google.android.filament:gltfio-android:1.4.5")
+
+//    implementation("com.graffity.android:arform:2.0.1")
+//    include("com.graffity.android:arform:2.0.1")
+//
+//    implementation("com.graffity.android:arformux:2.0.3")
+//    include("com.graffity.android:arformux:2.0.3")
+
+//    implementation("com.google.ar:core:1.30.0")
+//    include("com.google.ar:core:1.30.0")
+
+    // Maps & Location
+    implementation("com.google.android.gms:play-services-maps:18.0.2")
+    include("com.google.android.gms:play-services-maps:18.0.2")
+
+    implementation("com.google.android.gms:play-services-location:19.0.1")
+    include("com.google.android.gms:play-services-location:19.0.1")
+
+    implementation("com.google.maps.android:maps-utils-ktx:0.2")
+    include("com.google.maps.android:maps-utils-ktx:0.2")
+
+    // Lottie
+    implementation("com.airbnb.android:lottie:4.2.1")
+    include("com.airbnb.android:lottie:4.2.1")
+
+    // Kotlin
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+    implementation "androidx.test.ext:junit-ktx:1.1.3"
+
+    // Test
+    testImplementation "org.robolectric:robolectric:4.5"
+
+    // Defaults
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    implementation "androidx.appcompat:appcompat:1.4.1"
+    implementation "com.google.android.material:material:1.5.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.3"
+    testImplementation "junit:junit:4.13.2"
+    androidTestImplementation "androidx.test.ext:junit:1.1.3"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+}
+
+//task copyLibs(type: Copy) {
+//    from configurations.copyDeps
+//    into "libs"
+//}

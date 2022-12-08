@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.graffity.image";
+option java_outer_classname = "ImageProto";
+
+package image;
+
+service Image {
+  rpc SendImage (ImageRequest) returns (ImageResponse) {}
+}
+
+service ImageStream {
+  rpc SendStreamImage (stream ImageRequest) returns (stream ImageResponse) {}
+}
+
+service AvailableArea {
+  rpc CheckAvailableArea (AvailableAreaRequest) returns (AvailableAreaResponse) {}
+}
+
+message ImageRequest {
+  string message = 1;
+  bytes bytesImage = 2;
+  Position gpsPosition = 3;
+  CameraInfo cameraInfo = 4;
+}
+
+message ImageResponse {
+  string message = 1;
+  float accuracy = 2;
+  WorldCoordinate worldCoor = 3;
+  ColmapCoordinate colmapCoor = 4;
+}
+
+message AvailableAreaRequest {
+  Position gpsPosition = 1;
+  int32 maxDistance = 2; // metres
+  int32 minDistance = 3; // metres
+}
+
+message AvailableAreaResponse {
+  string message = 1;
+  bool isAvailable = 2;
+  Position gpsPosition = 3;
+}
+
+message Position {
+  double latitude = 1;
+  double longitude = 2;
+  double altitude = 3;
+}
+
+message WorldCoordinate{
+  double latitude = 1;
+  double longitude = 2;
+  double altitude = 3;
+  double utm_x = 4;
+  double utm_y = 5;
+}
+
+message ColmapCoordinate {
+  double qw = 1;
+  double qx = 2;
+  double qy = 3;
+  double qz = 4;  
+  double tx = 5;
+  double ty = 6;
+  double tz = 7;
+  double px = 8;
+  double py = 9;
+  double pz = 10;
+}
+
+
+message CameraInfo {
+  float pixelFocalLength = 1;
+  float principalPointX = 2; // or optical center
+  float principalPointY = 3; // or optical center
+  float radialDistortion = 4;
+}

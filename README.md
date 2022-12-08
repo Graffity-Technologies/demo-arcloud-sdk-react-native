@@ -1,1 +1,1 @@
-# demo-arcloud-sdk-react-native
+# Demo Graffity ARCloud SDK for ReactNative
