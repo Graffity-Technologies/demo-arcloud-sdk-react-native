@@ -1,4 +1,7 @@
 apply plugin: "com.android.application"
+apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -248,15 +251,15 @@ android {
                 output.versionCodeOverride =
                         defaultConfig.versionCode * 1000 + versionCodes.get(abi)
             }
-
         }
     }
 }
 
 dependencies {
-//    implementation project(':arcloud')
-    implementation 'com.graffity.android:arcloud:0.4.7'
+    implementation 'com.graffity.android:arcloud:0.5.4-evp'
+    //    implementation project(':arcloud')
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     //noinspection GradleDynamicVersion

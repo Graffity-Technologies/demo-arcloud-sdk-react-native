@@ -21,7 +21,7 @@ public class GraffityARPackage implements ReactPackage {
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
 
-        modules.add(new GraffityAndroidModule(reactContext));
+        modules.add(new GraffityAndroidModuleKotlin(reactContext));
 
         return modules;
     }

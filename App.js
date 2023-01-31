@@ -7,7 +7,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import type {Node} from 'react';
+import type { Node } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,6 +18,8 @@ import {
   View,
   Button,
   Platform,
+  NativeEventEmitter,
+  NativeModules,
 } from 'react-native';
 
 import {
@@ -33,7 +35,7 @@ import { AndroidModuleButton } from './ARBridge';
 
 /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
  * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
+const Section = ({ children, title }): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -68,8 +70,18 @@ const App: () => Node = () => {
   };
 
   const counterHandler = () => {
-    setCounter(5);
+    setCounter(counter + 1);
+    console.log(counter);
   }
+
+  useEffect(() => {
+    const eventEmitter = new NativeEventEmitter(NativeModules.ToastExample);
+    eventListener = eventEmitter.addListener('message', (event) => {
+      console.log("eventListener", event.eventProperty)
+    });
+
+    return () => eventListener.remove();
+  });
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -100,9 +112,9 @@ const App: () => Node = () => {
           </View>
 
           <View style={{ margin: 24, paddingBottom: 200 }}>
-          {(Platform.OS === 'android') &&
-            <AndroidModuleButton />
-          }
+            {(Platform.OS === 'android') &&
+              <AndroidModuleButton />
+            }
           </View>
 
         </View>

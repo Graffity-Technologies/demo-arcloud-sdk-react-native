@@ -13,11 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".EmptyActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+            android:process=":EmptyActivity" />
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
@@ -33,7 +29,7 @@
         </activity>
         <activity
             android:name="com.graffity.arcloud.ar.ARCloudActivity"
-            android:process=":ARCloudActivity"/>
+            android:process=":ARCloudActivity" />
     </application>
 
 </manifest>
